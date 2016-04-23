@@ -1,0 +1,17 @@
+.case {
+	position: relative;
+	border: 1px solid black;
+	width: 28px;
+	height: 28px;
+	float: left;
+}
+
+.clear { clear : both ; }
+
+.couleurs {
+	position: relative;
+	width: 50px;
+	height: 25px;
+	float:left;
+	margin-bottom: 5px;
+}
