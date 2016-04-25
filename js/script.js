@@ -2,6 +2,15 @@ var couleurs=['rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(0, 0, 0
 var numcase=0;
 var couleur='';
 
+var largeur=16;
+var hauteur=16;
+
+var nbCases = largeur*hauteur;
+// var url = 'http://10.200.0.156/js/tutos/jqueryExos/draw.php';
+var url = 'PHP/draw.php';
+// var urlJSON = 'http://10.200.0.156/js/tutos/jqueryExos/drawing.json';
+var urlJSON = 'Json/drawing.json';
+
 // Création des cases de couleur qui seront draggees
 for (var i=0; i<couleurs.length; i++) {
 	$("body").append("<div class='couleurs' id='couleur"+i+"' draggable='true'></div>");
@@ -19,8 +28,8 @@ for (var i=0; i<couleurs.length; i++) {
 $("body").append("<div class='clear'></div>");
 
 // Création de la grille de cases blanches ou seront droppees les couleurs
-for (var i=0; i<16; i++) {
-	for(var j=0; j<16; j++) {
+for (var i=0; i<hauteur; i++) {
+	for(var j=0; j<largeur; j++) {
 		$("body").append("<div class='case case"+numcase+"'></div>");
 		numcase++;
 	}
@@ -37,7 +46,7 @@ $(".case").droppable({
 		console.log(numero2);
 
 		$.ajax({
-			url: 'http://10.200.0.156/js/tutos/jqueryExos/draw.php',
+			url: url,
 			type: 'POST',
 			data: {numcase: numero2[0], couleur: couleur}
 		});
@@ -49,9 +58,9 @@ $("body").append("<button id='alea'>Aléatoire</button");
 
 // Effacer toutes les cases de la grille
 $("#effacer").click(function(){
-	for (var i=0; i<256; i++) {
+	for (var i=0; i<nbCases; i++) {
 	$.ajax({
-			url : 'http://10.200.0.156/js/tutos/jqueryExos/draw.php',
+			url : url,
 			type: 'POST',
 			data: {numcase: i, couleur: 'rgb(255, 255, 255)'}
 		});
@@ -62,7 +71,7 @@ $("#effacer").click(function(){
 // Rafraichissement de la grille distante toutes les 5sec
 setInterval(function(){
 	$.ajax({
-		url: 'http://10.200.0.156/js/tutos/jqueryExos/drawing.json',
+		url: urlJSON,
 		datatype: 'JSON',
 		data: 'data',
 		success: function(fichJSON) {
@@ -83,7 +92,7 @@ $("#alea").click(function(){
 
 	$(".case"+caseAlea).css("background-color", coulAlea);
 	$.ajax({
-			url: 'http://10.200.0.156/js/tutos/jqueryExos/draw.php',
+			url: url,
 			type: 'POST',
 			data: {numcase: caseAlea, couleur: coulAlea}
 		});
