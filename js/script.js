@@ -29,15 +29,17 @@ for (var i=0; i<16; i++) {
 
 $(".case").droppable({
 	addClasses: false,
-	drop: function(event, ui) {
+	over: function(event, ui) {
 		var droppe = event.target;
 		droppe.style.backgroundColor = couleur;
 		numero = droppe.className.substr(9);
-				
+		numero2 =/\d+/.exec(numero);
+		console.log(numero2);
+
 		$.ajax({
 			url: 'http://10.200.0.156/js/tutos/jqueryExos/draw.php',
 			type: 'POST',
-			data: {numcase: numero, couleur: couleur}
+			data: {numcase: numero2[0], couleur: couleur}
 		});
 	}		
 });
