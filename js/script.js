@@ -84,10 +84,10 @@ setInterval(function(){
 
 // Création d'une case aléatoire avec une couleur aléatoire
 $("#alea").click(function(){
-	caseAlea = Math.floor((255-0)*Math.random());
-	coulR = Math.floor((255-0)*Math.random());
-	coulG = Math.floor((255-0)*Math.random());
-	coulB = Math.floor((255-0)*Math.random());
+	caseAlea = Math.floor((strlen(nbCases)-1)*Math.random());
+	coulR = Math.floor((255)*Math.random());
+	coulG = Math.floor((255)*Math.random());
+	coulB = Math.floor((255)*Math.random());
 	coulAlea = "rgb("+coulR+","+coulG+","+coulB+")";
 
 	$(".case"+caseAlea).css("background-color", coulAlea);
