@@ -44,8 +44,7 @@ $(".case").droppable({
 		droppe.style.backgroundColor = couleur;
 		numero = droppe.className.substr(9);
 		numero2 =/\d+/.exec(numero);
-		console.log(numero2);
-
+		
 		$.ajax({
 			url: url,
 			type: 'POST',
@@ -67,14 +66,11 @@ setInterval(function(){
 	});
 	}, 5000);
 
-// Création d'une case aléatoire avec une couleur aléatoire
-$("#alea").click(function(){
-	
-})
-
 // Zone de texte pour entrer des commandes
 $("body").append("Commande : <input id='commandes'/>");
+$("body").append("Parametres : <input id='parametres'/>");
 $("body").append("<button id='valideCommande'>Valider</button>");
+
 
 $("#valideCommande").click(function () {
 	
@@ -85,6 +81,11 @@ $("#valideCommande").click(function () {
 		for (var i=0; i<nbCases; i++) {
 			$(".case"+i).css("background-color", 'rgb(255, 255, 255');
 		}
+		/*$.ajax({
+			url: url,
+			type: 'POST',
+			data: {commande: commande}
+		});*/
 	}
 
 	if (commande == 'aleatoire')
@@ -95,18 +96,30 @@ $("#valideCommande").click(function () {
 		coulB = Math.floor((255)*Math.random());
 		coulAlea = "rgb("+coulR+","+coulG+","+coulB+")";
 
+		$("#parametres").val(caseAlea+";"+coulAlea);
+
 		$(".case"+caseAlea).css("background-color", coulAlea);
-		$.ajax({
+		/*$.ajax({
 			url: url,
 			type: 'POST',
-			data: {numcase: caseAlea, couleur: coulAlea}
-		});
+			data: {commande: commande, parametres: $("#parametres").val()}
+		});*/
 	}
-	else  {
-		$.ajax({
+	
+	if (commande == 'test')
+	{
+		test="TEST1;TEST2";
+		$("#parametres").val(test);
+		/*$.ajax({
 			url: url,
 			type: 'POST',
-			data: {commande: commande}
-		});
+			data: {commande: commande, parametres: test}
+		});*/
 	}
+
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: {commande: commande, parametres: $("#parametres").val()}
+	});
 })
