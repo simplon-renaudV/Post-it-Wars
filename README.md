@@ -1,8 +1,8 @@
 #Exercice JQuery Post-it Wars
 
-##Enoncé :
+##PostIt Wars "Multijoueur"
 
-###PostIt Wars "Multijoueur"
+### Enoncé original
 
 **Objectif**: Créer une grille "PixelArt" sur laquelle on peut déposer des couleurs en drag'n'drop.
 
@@ -17,3 +17,12 @@ Variables POST à envoyer :
 - couleur code couleur de la case (ex: rvb(50,200,80))
 
 **Bonus**: Récupérer le fichier JSON (Adresse : http://10.200.0.156/js/tutos/jqueryExos/drawing.json) et coloriser les couleurs selon les données contenues dans le fichier
+
+###Améliorations personnelles apportées au projet :
+
+Dessin des cases avec over au lieu de drop
+Ajout d'une zone de texte "commande" servant à passer des commandes
+
+Commandes disponibles :
+- effacer : effacer l'ensemble des cases en local et sur le fichier distant
+- aléatoire : colorie une case aleatoirement avec une couleur aleatoire en rgb;
