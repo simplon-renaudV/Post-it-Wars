@@ -48,7 +48,7 @@ $(".case").droppable({
 		$.ajax({
 			url: url,
 			type: 'POST',
-			data: {numcase: numero2[0], couleur: couleur}
+			data: {numcase: numero2[0], couleur: couleur, totalCases: nbCases}
 		});
 	}		
 });
@@ -96,7 +96,7 @@ $("#valideCommande").click(function () {
 		coulB = Math.floor((255)*Math.random());
 		coulAlea = "rgb("+coulR+","+coulG+","+coulB+")";
 
-		$("#parametres").val(caseAlea+";"+coulAlea);
+		$("#parametres").val(caseAlea+";"+coulAlea+";"+nbCases);
 
 		$(".case"+caseAlea).css("background-color", coulAlea);
 	}
@@ -113,4 +113,6 @@ $("#valideCommande").click(function () {
 		type: 'POST',
 		data: {commande: commande, parametres: $("#parametres").val()}
 	});
+
+	$("#parametres").val('');
 })

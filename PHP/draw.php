@@ -14,10 +14,25 @@
 	}
 
 	// Stocke la grille dans le fichier drawing.json
-	if (isset($_POST['numcase']) && isset($_POST['couleur'])){
-		$tabCases[$_POST['numcase']] = $_POST['couleur'];
-		
-		drawJson($tabCases);
+	if (isset($_POST['numcase']) && isset($_POST['couleur']) && isset($_POST['totalCases'])) {
+		if ($_POST['numcase']>=0 && $_POST['numcase']<$_POST['totalCases']) {
+
+			// vérifie que la couleur est bien au format rgb
+			$strCoul=implode(preg_grep("/[0-9,]/", str_split($_POST['couleur'])));
+			$tabCoul=explode(",", $strCoul);
+			if (count($tabCoul)==3) {
+				if ($tabCoul[0]>=0 && $tabCoul[0]<256 &&
+					$tabCoul[1]>=0 && $tabCoul[1]<256 &&
+					$tabCoul[2]>=0 && $tabCoul[2]<256) {
+
+					$tabCases[$_POST['numcase']] = $_POST['couleur'];
+					drawJson($tabCases);
+				}
+				else echo "Couleur pas au format rgb";
+			}
+			else echo "Couleur pas au format rgb";
+		}
+		else echo "Cette case n'existe pas";
 	}
 
 	// Efface le fichier drawing.json
@@ -25,14 +40,32 @@
 		file_put_contents($GLOBALS['grilleJson'], '');
 	}
 	
-	// Colorie de facon aléatoire une case
+	// Colorie de facon aléatoire une case (numero case, couleur, totalcases)
 	if (isset($_POST['commande']) && $_POST['commande'] == "aleatoire") {
 		if (isset($_POST['parametres'])) {
 			$params = explode(";", $_POST['parametres']);
+			if (count($params)==3) {
+				if ($params[0]>=0 && $params[0]<$params[2]) {
+					// Vérifie que la couleur est au format rgb
+					$strCoul=implode(preg_grep("/[0-9,]/", str_split($params[1])));
+					$tabCoul=explode(",", $strCoul);
+					if (count($tabCoul)==3) {
+						if ($tabCoul[0]>=0 && $tabCoul[0]<256 &&
+							$tabCoul[1]>=0 && $tabCoul[1]<256 &&
+							$tabCoul[2]>=0 && $tabCoul[2]<256) {
 
-			$tabCases[$params[0]] = $params[1];
-			drawJson($tabCases);
+							$tabCases[$params[0]] = $params[1];
+							drawJson($tabCases);			
+						}
+						else echo "Couleur pas au format rgb";
+					}
+					else echo "Couleur pas au format rgb";
+				}
+				else echo "Cette case n'existe pas";
+			}
+			else echo "Parametres incorrects";
 		}
+		else echo "Parametres incorrects";
 	}
 
 	// Dessine un rectangle a partir des 4 cases des angles et de la couleur (Haut Gauche, Haut Droite, Bas Droite, Bas Gauche, Couleur)
@@ -66,7 +99,7 @@
 	if (isset($_POST['commande']) && $_POST['commande'] == 'sauvegarder') {
 		if (isset($_POST['parametres'])) {
 			$params = explode(";", $_POST['parametres']);
-			$fichier = '../Json/'.$params[0].'.json';
+			$fichier = '../saves/'.$params[0].'.json';
 			copy($GLOBALS['grilleJson'], $fichier);
 		}
 	}
@@ -75,7 +108,7 @@
 	if (isset($_POST['commande']) && $_POST['commande'] == 'charger') {
 		if (isset($_POST['parametres'])) {
 			$params = explode(";", $_POST['parametres']);
-			$fichier = '../Json/'.$params[0].'.json';
+			$fichier = '../saves/'.$params[0].'.json';
 			copy($fichier, $GLOBALS['grilleJson']);
 		}
 	}
