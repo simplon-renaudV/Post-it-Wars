@@ -22,10 +22,10 @@ Variables POST à envoyer :
 
 - Dessin des cases avec over au lieu de drop
 - Ajout d'une zone de texte "commande" servant à passer des commandes
-- Ajout d'une zone de texte paramètres, ceux-ci sont séparés par un ;
 
 Commandes disponibles :
 - effacer : effacer l'ensemble des cases en local et sur le fichier distant
 - aléatoire : colorie une case aleatoirement avec une couleur aleatoire en rgb;
-- rectangle : dessine un rectangle a partir des 4 angles (Haut Gauche, Haut Droite, Bas Droite, Bas Gauche) et de la couleur en rgb
-
+- rectangle : Dessine un rectangle a partir des 4 cases des angles (Haug Gauche, Haut Droite, Bas Droite, Bas Gauche) et de la couleur en rgb
+- sauvegarder : enregistre le fichier marque dans la case parametre
+- charger : charge le fichier marque dans la case parametre

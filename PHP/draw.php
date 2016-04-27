@@ -7,10 +7,10 @@
 	function drawJson($tableau)
 	{
 		$cases = json_encode($tableau);
-		file_put_contents($grilleJson, $cases, FILE_APPEND);
-		$cases = file_get_contents($grilleJson);
+		file_put_contents($GLOBALS['grilleJson'], $cases, FILE_APPEND);
+		$cases = file_get_contents($GLOBALS['grilleJson']);
 		$cases = str_replace("}{", ",", $cases);
-		file_put_contents($grilleJson, $cases);
+		file_put_contents($GLOBALS['grilleJson'], $cases);
 	}
 
 	// Stocke la grille dans le fichier drawing.json
@@ -22,7 +22,7 @@
 
 	// Efface le fichier drawing.json
 	if (isset($_POST['commande']) && $_POST['commande'] == "effacer") {
-		file_put_contents($grilleJson, '');
+		file_put_contents($GLOBALS['grilleJson'], '');
 	}
 	
 	// Colorie de facon aléatoire une case
@@ -59,6 +59,24 @@
 				$tabCases[$i] = $params[4];
 				drawJson($tabCases);
 			}
+		}
+	}
+
+	// Sauvegarde du fichier en cours
+	if (isset($_POST['commande']) && $_POST['commande'] == 'sauvegarder') {
+		if (isset($_POST['parametres'])) {
+			$params = explode(";", $_POST['parametres']);
+			$fichier = '../Json/'.$params[0].'.json';
+			copy($GLOBALS['grilleJson'], $fichier);
+		}
+	}
+
+	// Chargement d'un fichier
+	if (isset($_POST['commande']) && $_POST['commande'] == 'charger') {
+		if (isset($_POST['parametres'])) {
+			$params = explode(";", $_POST['parametres']);
+			$fichier = '../Json/'.$params[0].'.json';
+			copy($fichier, $GLOBALS['grilleJson']);
 		}
 	}
 
