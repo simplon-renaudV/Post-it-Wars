@@ -20,8 +20,8 @@ Variables POST à envoyer :
 
 ###Améliorations personnelles apportées au projet :
 
-Dessin des cases avec over au lieu de drop
-Ajout d'une zone de texte "commande" servant à passer des commandes
+- Dessin des cases avec over au lieu de drop
+- Ajout d'une zone de texte "commande" servant à passer des commandes
 
 Commandes disponibles :
 - effacer : effacer l'ensemble des cases en local et sur le fichier distant
