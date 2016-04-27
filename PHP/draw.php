@@ -1,4 +1,6 @@
 <?php
+	include ('AllowCrossOrigin.php');
+
 	if (isset($_POST['numcase']) && isset($_POST['couleur'])){
 		$tabCases[$_POST['numcase']] = $_POST['couleur'];
 		$grilleJson = '../Json/drawing.json';

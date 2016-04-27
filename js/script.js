@@ -6,9 +6,9 @@ var largeur=16;
 var hauteur=16;
 
 var nbCases = largeur*hauteur;
-// var url = 'http://10.200.0.156/js/tutos/jqueryExos/draw.php';
+//var url = 'http://10.200.0.156/js/tutos/jqueryExos/draw.php';
 var url = 'PHP/draw.php';
-// var urlJSON = 'http://10.200.0.156/js/tutos/jqueryExos/drawing.json';
+//var urlJSON = 'http://10.200.0.156/js/tutos/jqueryExos/drawing.json';
 var urlJSON = 'Json/drawing.json';
 
 // Création des cases de couleur qui seront draggees
@@ -53,7 +53,9 @@ $(".case").droppable({
 	}		
 });
 
+// Bouton pour effacer les cases
 $("body").append("<button id='effacer'>Effacer</button>");
+// Bouton pour afficher une case aléatoire avec une couleur aléatoire
 $("body").append("<button id='alea'>Aléatoire</button");
 
 // Effacer toutes les cases de la grille
@@ -73,7 +75,6 @@ setInterval(function(){
 	$.ajax({
 		url: urlJSON,
 		datatype: 'JSON',
-		data: 'data',
 		success: function(fichJSON) {
 			$.each(fichJSON, function (index, element) {
 				$(".case"+index).css("background-color", element);
@@ -84,7 +85,7 @@ setInterval(function(){
 
 // Création d'une case aléatoire avec une couleur aléatoire
 $("#alea").click(function(){
-	caseAlea = Math.floor((strlen(nbCases)-1)*Math.random());
+	caseAlea = Math.floor((nbCases-1)*Math.random());
 	coulR = Math.floor((255)*Math.random());
 	coulG = Math.floor((255)*Math.random());
 	coulB = Math.floor((255)*Math.random());
