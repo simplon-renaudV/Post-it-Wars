@@ -27,3 +27,5 @@ Variables POST à envoyer :
 Commandes disponibles :
 - effacer : effacer l'ensemble des cases en local et sur le fichier distant
 - aléatoire : colorie une case aleatoirement avec une couleur aleatoire en rgb;
+- rectangle : dessine un rectangle a partir des 4 angles (Haut Gauche, Haut Droite, Bas Droite, Bas Gauche) et de la couleur en rgb
+

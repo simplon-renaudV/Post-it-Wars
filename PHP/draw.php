@@ -3,17 +3,21 @@
 
 	$grilleJson = '../Json/drawing.json';
 
+	// Fonction pour mettre à jour le fichier drawing.json
+	function drawJson($tableau)
+	{
+		$cases = json_encode($tableau);
+		file_put_contents($grilleJson, $cases, FILE_APPEND);
+		$cases = file_get_contents($grilleJson);
+		$cases = str_replace("}{", ",", $cases);
+		file_put_contents($grilleJson, $cases);
+	}
+
 	// Stocke la grille dans le fichier drawing.json
 	if (isset($_POST['numcase']) && isset($_POST['couleur'])){
 		$tabCases[$_POST['numcase']] = $_POST['couleur'];
 		
-		$cases = json_encode($tabCases);
-		file_put_contents($grilleJson, $cases, FILE_APPEND);
-
-		$cases = file_get_contents($grilleJson);
-
-		$cases = str_replace("}{", ",", $cases);
-		file_put_contents($grilleJson, $cases);
+		drawJson($tabCases);
 	}
 
 	// Efface le fichier drawing.json
@@ -27,13 +31,34 @@
 			$params = explode(";", $_POST['parametres']);
 
 			$tabCases[$params[0]] = $params[1];
-			$cases = json_encode($tabCases);
-			file_put_contents($grilleJson, $cases, FILE_APPEND);
+			drawJson($tabCases);
+		}
+	}
 
-			$cases = file_get_contents($grilleJson);
+	// Dessine un rectangle a partir des 4 cases des angles et de la couleur (Haut Gauche, Haut Droite, Bas Droite, Bas Gauche, Couleur)
+	if (isset($_POST['commande']) && $_POST['commande'] == 'rectangle') {
+		if (isset($_POST['parametres'])) {
+			$params = explode(";", $_POST['parametres']);
+			
+			for ($i=$params[0]; $i<$params[1]; $i++){
+				$tabCases[$i] = $params[4];
+				drawJson($tabCases);
+			}
+		
+			for ($i=$params[1]; $i<$params[2]; $i+=16){
+				$tabCases[$i] = $params[4];
+				drawJson($tabCases);
+			}
 
-			$cases = str_replace("}{", ",", $cases);
-			file_put_contents($grilleJson, $cases);
+			for ($i=$params[2]; $i>$params[3]; $i--){
+				$tabCases[$i] = $params[4];
+				drawJson($tabCases);
+			}
+		
+			for ($i=$params[3]; $i>$params[0]; $i-=16){
+				$tabCases[$i] = $params[4];
+				drawJson($tabCases);
+			}
 		}
 	}
 
@@ -46,6 +71,4 @@
 			}
 		}
 		echo "Ceci est un test";
-	}
-
-	
+	}	

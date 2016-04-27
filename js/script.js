@@ -66,28 +66,28 @@ setInterval(function(){
 	});
 	}, 5000);
 
-// Zone de texte pour entrer des commandes
+// Zone de texte pour entrer les commandes et les paramètres
 $("body").append("Commande : <input id='commandes'/>");
 $("body").append("Parametres : <input id='parametres'/>");
 $("body").append("<button id='valideCommande'>Valider</button>");
 
+// *******************************
+// **** Gestion des commandes ****
+// *******************************
 
 $("#valideCommande").click(function () {
 	
 	commande = $("#commandes").val();
 
+	// Efface la grille locale
 	if (commande == 'effacer')
 	{
 		for (var i=0; i<nbCases; i++) {
 			$(".case"+i).css("background-color", 'rgb(255, 255, 255');
 		}
-		/*$.ajax({
-			url: url,
-			type: 'POST',
-			data: {commande: commande}
-		});*/
 	}
 
+	// Colorie une case aleatoire avec une couleur aléatoire
 	if (commande == 'aleatoire')
 	{
 		caseAlea = Math.floor((nbCases-1)*Math.random());
@@ -99,24 +99,15 @@ $("#valideCommande").click(function () {
 		$("#parametres").val(caseAlea+";"+coulAlea);
 
 		$(".case"+caseAlea).css("background-color", coulAlea);
-		/*$.ajax({
-			url: url,
-			type: 'POST',
-			data: {commande: commande, parametres: $("#parametres").val()}
-		});*/
 	}
 	
+	// Commande de test
 	if (commande == 'test')
 	{
-		test="TEST1;TEST2";
-		$("#parametres").val(test);
-		/*$.ajax({
-			url: url,
-			type: 'POST',
-			data: {commande: commande, parametres: test}
-		});*/
+		$("#parametres").val();
 	}
 
+	// Envoie de la requête ajax contenant la commande ainsi que les paramètres
 	$.ajax({
 		url: url,
 		type: 'POST',
