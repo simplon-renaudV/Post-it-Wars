@@ -36,6 +36,7 @@ for (var i=0; i<hauteur; i++) {
 	$("body").append("<div class='clear'></div>");
 }
 
+// Ajout de l'event droppable sur les cases
 $(".case").droppable({
 	addClasses: false,
 	over: function(event, ui) {
@@ -53,23 +54,6 @@ $(".case").droppable({
 	}		
 });
 
-// Bouton pour effacer les cases
-$("body").append("<button id='effacer'>Effacer</button>");
-// Bouton pour afficher une case aléatoire avec une couleur aléatoire
-$("body").append("<button id='alea'>Aléatoire</button");
-
-// Effacer toutes les cases de la grille
-$("#effacer").click(function(){
-	for (var i=0; i<nbCases; i++) {
-	$.ajax({
-			url : url,
-			type: 'POST',
-			data: {numcase: i, couleur: 'rgb(255, 255, 255)'}
-		});
-		$(".case"+i).css("background-color", 'rgb(255, 255, 255');
-	}
-});
-
 // Rafraichissement de la grille distante toutes les 5sec
 setInterval(function(){
 	$.ajax({
@@ -85,16 +69,44 @@ setInterval(function(){
 
 // Création d'une case aléatoire avec une couleur aléatoire
 $("#alea").click(function(){
-	caseAlea = Math.floor((nbCases-1)*Math.random());
-	coulR = Math.floor((255)*Math.random());
-	coulG = Math.floor((255)*Math.random());
-	coulB = Math.floor((255)*Math.random());
-	coulAlea = "rgb("+coulR+","+coulG+","+coulB+")";
+	
+})
 
-	$(".case"+caseAlea).css("background-color", coulAlea);
-	$.ajax({
+// Zone de texte pour entrer des commandes
+$("body").append("Commande : <input id='commandes'/>");
+$("body").append("<button id='valideCommande'>Valider</button>");
+
+$("#valideCommande").click(function () {
+	
+	commande = $("#commandes").val();
+
+	if (commande == 'effacer')
+	{
+		for (var i=0; i<nbCases; i++) {
+			$(".case"+i).css("background-color", 'rgb(255, 255, 255');
+		}
+	}
+
+	if (commande == 'aleatoire')
+	{
+		caseAlea = Math.floor((nbCases-1)*Math.random());
+		coulR = Math.floor((255)*Math.random());
+		coulG = Math.floor((255)*Math.random());
+		coulB = Math.floor((255)*Math.random());
+		coulAlea = "rgb("+coulR+","+coulG+","+coulB+")";
+
+		$(".case"+caseAlea).css("background-color", coulAlea);
+		$.ajax({
 			url: url,
 			type: 'POST',
 			data: {numcase: caseAlea, couleur: coulAlea}
 		});
+	}
+	else  {
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: {commande: commande}
+		});
+	}
 })
