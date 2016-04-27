@@ -22,6 +22,7 @@ Variables POST à envoyer :
 
 - Dessin des cases avec over au lieu de drop
 - Ajout d'une zone de texte "commande" servant à passer des commandes
+- Ajout d'une zone de texte paramètres, ceux-ci sont séparés par un ;
 
 Commandes disponibles :
 - effacer : effacer l'ensemble des cases en local et sur le fichier distant
