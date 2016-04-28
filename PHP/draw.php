@@ -13,22 +13,37 @@
 		file_put_contents($GLOBALS['grilleJson'], $cases);
 	}
 
+	// Fonction pour vérifier si une couleur est bien au format rgb
+	function verifCouleur ($color)
+	{
+		$strCoul=implode(preg_grep("/[0-9,]/", str_split($color)));
+		$tabCoul=explode(",", $strCoul);
+		if (count($tabCoul)==3) {
+			if ($tabCoul[0]>=0 && $tabCoul[0]<256 &&
+				$tabCoul[1]>=0 && $tabCoul[1]<256 &&
+				$tabCoul[2]>=0 && $tabCoul[2]<256) {
+			
+				return true;
+			}
+		
+		}
+		return false;
+	}
+
 	// Stocke la grille dans le fichier drawing.json
-	if (isset($_POST['numcase']) && isset($_POST['couleur']) && isset($_POST['totalCases'])) {
-		if ($_POST['numcase']>=0 && $_POST['numcase']<$_POST['totalCases']) {
+	if (isset($_POST['numcase']) && isset($_POST['couleur'])) {
+		if (!isset($_POST['totalCases'])) {
+			$totalCases = 256;
+		}
+		else {
+			$totalCases = $_POST['totalCases'];
+		}
 
-			// vérifie que la couleur est bien au format rgb
-			$strCoul=implode(preg_grep("/[0-9,]/", str_split($_POST['couleur'])));
-			$tabCoul=explode(",", $strCoul);
-			if (count($tabCoul)==3) {
-				if ($tabCoul[0]>=0 && $tabCoul[0]<256 &&
-					$tabCoul[1]>=0 && $tabCoul[1]<256 &&
-					$tabCoul[2]>=0 && $tabCoul[2]<256) {
+		if ($_POST['numcase']>=0 && $_POST['numcase']<$totalCases) {
 
-					$tabCases[$_POST['numcase']] = $_POST['couleur'];
-					drawJson($tabCases);
-				}
-				else echo "Couleur pas au format rgb";
+			if (verifCouleur($_POST['couleur'])) {
+				$tabCases[$_POST['numcase']] = $_POST['couleur'];
+				drawJson($tabCases);
 			}
 			else echo "Couleur pas au format rgb";
 		}
@@ -46,18 +61,9 @@
 			$params = explode(";", $_POST['parametres']);
 			if (count($params)==3) {
 				if ($params[0]>=0 && $params[0]<$params[2]) {
-					// Vérifie que la couleur est au format rgb
-					$strCoul=implode(preg_grep("/[0-9,]/", str_split($params[1])));
-					$tabCoul=explode(",", $strCoul);
-					if (count($tabCoul)==3) {
-						if ($tabCoul[0]>=0 && $tabCoul[0]<256 &&
-							$tabCoul[1]>=0 && $tabCoul[1]<256 &&
-							$tabCoul[2]>=0 && $tabCoul[2]<256) {
-
-							$tabCases[$params[0]] = $params[1];
-							drawJson($tabCases);			
-						}
-						else echo "Couleur pas au format rgb";
+					if (verifCouleur($params[1])) {
+						$tabCases[$params[0]] = $params[1];
+						drawJson($tabCases);
 					}
 					else echo "Couleur pas au format rgb";
 				}
@@ -109,6 +115,7 @@
 		if (isset($_POST['parametres'])) {
 			$params = explode(";", $_POST['parametres']);
 			$fichier = '../saves/'.$params[0].'.json';
+			file_put_contents($GLOBALS['grilleJson'], '');
 			copy($fichier, $GLOBALS['grilleJson']);
 		}
 	}

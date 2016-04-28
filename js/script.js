@@ -19,6 +19,7 @@ for (var i=0; i<couleurs.length; i++) {
 	$("#couleur"+i).draggable({
 		cursor: "grab",
 		helper: "clone",
+		cache: false,
 		drag: function(event, ui) {
 			couleur = $(this).css("background-color");
 		}
@@ -48,6 +49,7 @@ $(".case").droppable({
 		$.ajax({
 			url: url,
 			type: 'POST',
+			cache: false,
 			data: {numcase: numero2[0], couleur: couleur, totalCases: nbCases}
 		});
 	}		
@@ -58,6 +60,7 @@ setInterval(function(){
 	$.ajax({
 		url: urlJSON,
 		datatype: 'JSON',
+		cache: false,
 		success: function(fichJSON) {
 			$.each(fichJSON, function (index, element) {
 				$(".case"+index).css("background-color", element);
@@ -80,7 +83,7 @@ $("#valideCommande").click(function () {
 	commande = $("#commandes").val();
 
 	// Efface la grille locale
-	if (commande == 'effacer')
+	if (commande == 'effacer' || commande == 'charger')
 	{
 		for (var i=0; i<nbCases; i++) {
 			$(".case"+i).css("background-color", 'rgb(255, 255, 255');
@@ -100,7 +103,7 @@ $("#valideCommande").click(function () {
 
 		$(".case"+caseAlea).css("background-color", coulAlea);
 	}
-	
+
 	// Commande de test
 	if (commande == 'test')
 	{
@@ -111,6 +114,7 @@ $("#valideCommande").click(function () {
 	$.ajax({
 		url: url,
 		type: 'POST',
+		cache: false,
 		data: {commande: commande, parametres: $("#parametres").val()}
 	});
 
