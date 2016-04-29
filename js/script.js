@@ -2,8 +2,8 @@ var couleurs=['rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(0, 0, 0
 var numcase=0;
 var couleur='';
 
-var largeur=16;
-var hauteur=16;
+var largeur=32;
+var hauteur=32;
 
 var nbCases = largeur*hauteur;
 //var url = 'http://10.200.0.156/js/tutos/jqueryExos/draw.php';
@@ -86,7 +86,7 @@ $("#valideCommande").click(function () {
 	if (commande == 'effacer' || commande == 'charger')
 	{
 		for (var i=0; i<nbCases; i++) {
-			$(".case"+i).css("background-color", 'rgb(255, 255, 255');
+			$(".case"+i).css("background-color", 'rgb(255, 255, 255)');
 		}
 	}
 
@@ -102,6 +102,12 @@ $("#valideCommande").click(function () {
 		$("#parametres").val(caseAlea+";"+coulAlea+";"+nbCases);
 
 		$(".case"+caseAlea).css("background-color", coulAlea);
+	}
+
+	// Colorie la grille à partir d'une image
+	if (commande == 'chargerImage')
+	{
+		$tmp =$("#parametres").val($("#parametres").val() +";"+nbCases);
 	}
 
 	// Commande de test

@@ -1,5 +1,8 @@
 <?php
 	include ('AllowCrossOrigin.php');
+	require_once '../vendor/autoload.php';
+	
+	use ColorThief\ColorThief;
 
 	$grilleJson = '../Json/drawing.json';
 
@@ -117,6 +120,51 @@
 			$fichier = '../saves/'.$params[0].'.json';
 			file_put_contents($GLOBALS['grilleJson'], '');
 			copy($fichier, $GLOBALS['grilleJson']);
+		}
+	}
+
+	// Creation d'un dessin à partir d'une image (parametre : chemin de l'image;nombre de cases totales (defaut = 256)
+	if (isset($_POST['commande']) && $_POST['commande'] == "chargerImage") {
+		if (isset($_POST['parametres'])) {
+			$params = explode(";", $_POST['parametres']);
+
+			$sourceImage = $params[0];
+
+			if (!isset($params[1])) {
+				$totalCases = 256;
+			}
+			else {
+				$totalCases = $params[1];
+			}	
+
+			$tabCouleurs = [];
+			$couleurs = "";
+			$quality = 10;
+						
+			$l = sqrt($totalCases);
+			$h = sqrt($totalCases);
+
+			for ($i=0; $i<$h; $i++) {
+				for ($j=0; $j<$l; $j++) {
+					$area = array ('x' => $j*(64/$l), 'y' => $i*(64/$h), 'w' => (64/$l), 'h' => (64/$h));
+
+					$dominantColor = ColorThief::getColor($sourceImage, $quality, $area);
+					array_push($tabCouleurs, $dominantColor);
+				}
+			}
+
+			for ($i=0; $i<count($tabCouleurs); $i++) {
+				$couleurs .= '"'.$i.'":';
+				$strCoul = implode(',',$tabCouleurs[$i]);
+				$strCoul = '"rgb('.$strCoul.')",';
+				$couleurs .= $strCoul;
+			}
+
+			$couleurs = "{".$couleurs;
+			$couleurs = substr($couleurs,0,-1);
+			$couleurs .= "}";
+
+			file_put_contents($GLOBALS['grilleJson'], $couleurs);
 		}
 	}
 
