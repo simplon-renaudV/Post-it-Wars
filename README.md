@@ -30,3 +30,7 @@ Commandes disponibles :
 - sauvegarder : enregistre le fichier marque dans la case parametre
 - charger : charge le fichier marque dans la case parametre
 - chargerImage : rempli la grille à partir d'une image (lien vers l'image en paramètre); ==pour le moment l'image doit faire impérativement 64x64 pixels.==
+
+Utilisation du code php de kevin Subileau pour la fonction chargerImage :
+- https://github.com/ksubileau/color-thief-php
+- http://www.kevinsubileau.fr/
