@@ -36,7 +36,7 @@
 	// Stocke la grille dans le fichier drawing.json
 	if (isset($_POST['numcase']) && isset($_POST['couleur'])) {
 		if (!isset($_POST['totalCases'])) {
-			$totalCases = 256;
+			$totalCases = 4096;
 		}
 		else {
 			$totalCases = $_POST['totalCases'];
@@ -123,32 +123,31 @@
 		}
 	}
 
-	// Creation d'un dessin à partir d'une image (parametre : chemin de l'image;nombre de cases totales (defaut = 256)
+	// Creation d'un dessin à partir d'une image (parametre : chemin de l'image)
 	if (isset($_POST['commande']) && $_POST['commande'] == "chargerImage") {
 		if (isset($_POST['parametres'])) {
-			$params = explode(";", $_POST['parametres']);
 
-			$sourceImage = $params[0];
+			$sourceImage = imagecreatefromjpeg($_POST['parametres']);
 
-			if (!isset($params[1])) {
-				$totalCases = 256;
-			}
-			else {
-				$totalCases = $params[1];
-			}	
+			$lImg = 256;
+			$tZone = 4;
+
+			$imageRedim = imagescale($sourceImage, $lImg);
+			$l = imagesx($imageRedim);
+			$h = imagesy($imageRedim);
+
+			$nbCasesH = $h/$tZone-1;
+			$nbCasesL = $lImg/$tZone;
 
 			$tabCouleurs = [];
 			$couleurs = "";
 			$quality = 10;
 						
-			$l = sqrt($totalCases);
-			$h = sqrt($totalCases);
+			for ($i=0; $i<$nbCasesH; $i++) {
+				for ($j=0; $j<$nbCasesL; $j++) {
+					$area = array ('x' => $j*$tZone, 'y' => $i*$tZone, 'w' => $tZone, 'h' => $tZone);
 
-			for ($i=0; $i<$h; $i++) {
-				for ($j=0; $j<$l; $j++) {
-					$area = array ('x' => $j*(64/$l), 'y' => $i*(64/$h), 'w' => (64/$l), 'h' => (64/$h));
-
-					$dominantColor = ColorThief::getColor($sourceImage, $quality, $area);
+					$dominantColor = ColorThief::getColor($imageRedim, $quality, $area);
 					array_push($tabCouleurs, $dominantColor);
 				}
 			}

@@ -29,7 +29,8 @@ Commandes disponibles :
 - rectangle : Dessine un rectangle a partir des 4 cases des angles (Haug Gauche, Haut Droite, Bas Droite, Bas Gauche) et de la couleur en rgb
 - sauvegarder : enregistre le fichier marque dans la case parametre
 - charger : charge le fichier marque dans la case parametre
-- chargerImage : rempli la grille à partir d'une image (lien vers l'image en paramètre); ==pour le moment l'image doit faire impérativement 64x64 pixels.==
+- chargerImage : rempli la grille à partir d'une image (lien vers l'image en paramètre);
+**pour le moment l'image doit faire impérativement au format jpg et en mode paysage (largeur plus grande que hauteur).**
 
 Utilisation du code php de kevin Subileau pour la fonction chargerImage :
 - https://github.com/ksubileau/color-thief-php

@@ -2,18 +2,27 @@ var couleurs=['rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(0, 0, 0
 var numcase=0;
 var couleur='';
 
-var largeur=32;
-var hauteur=32;
+var largeur=64;
+var hauteur=64;
 
 var nbCases = largeur*hauteur;
-//var url = 'http://10.200.0.156/js/tutos/jqueryExos/draw.php';
 var url = 'PHP/draw.php';
-//var urlJSON = 'http://10.200.0.156/js/tutos/jqueryExos/drawing.json';
 var urlJSON = 'Json/drawing.json';
+
+// Fonction servant à afficher la grille blanche ou seront droppees les couleurs
+function afficherGrille(h, l) {
+	for (var i=0; i<h; i++) {
+		for(var j=0; j<l; j++) {
+			$("#grille").append("<div class='case case"+numcase+"'></div>");
+			numcase++;
+		}
+		$("#grille").append("<div class='clear'></div>");
+	}
+}
 
 // Création des cases de couleur qui seront draggees
 for (var i=0; i<couleurs.length; i++) {
-	$("body").append("<div class='couleurs' id='couleur"+i+"' draggable='true'></div>");
+	$("#palette").append("<div class='couleurs' id='couleur"+i+"' draggable='true'></div>");
 	$("#couleur"+i).css("background-color", couleurs[i]);
 
 	$("#couleur"+i).draggable({
@@ -26,16 +35,9 @@ for (var i=0; i<couleurs.length; i++) {
 	});
 }
 
-$("body").append("<div class='clear'></div>");
+$("#palette").append("<div class='clear'></div>");
 
-// Création de la grille de cases blanches ou seront droppees les couleurs
-for (var i=0; i<hauteur; i++) {
-	for(var j=0; j<largeur; j++) {
-		$("body").append("<div class='case case"+numcase+"'></div>");
-		numcase++;
-	}
-	$("body").append("<div class='clear'></div>");
-}
+afficherGrille(hauteur, largeur);
 
 // Ajout de l'event droppable sur les cases
 $(".case").droppable({
@@ -70,9 +72,9 @@ setInterval(function(){
 	}, 5000);
 
 // Zone de texte pour entrer les commandes et les paramètres
-$("body").append("Commande : <input id='commandes'/>");
-$("body").append("Parametres : <input id='parametres'/>");
-$("body").append("<button id='valideCommande'>Valider</button>");
+$("#outils").append("Commande : <input id='commandes'/>");
+$("#outils").append("Parametres : <input id='parametres'/>");
+$("#outils").append("<button id='valideCommande'>Valider</button>");
 
 // *******************************
 // **** Gestion des commandes ****
@@ -107,7 +109,7 @@ $("#valideCommande").click(function () {
 	// Colorie la grille à partir d'une image
 	if (commande == 'chargerImage')
 	{
-		$tmp =$("#parametres").val($("#parametres").val() +";"+nbCases);
+		$("#parametres").val();
 	}
 
 	// Commande de test
