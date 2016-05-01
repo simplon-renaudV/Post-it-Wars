@@ -2,8 +2,8 @@ var couleurs=['rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(0, 0, 0
 var numcase=0;
 var couleur='';
 
-var largeur=64;
-var hauteur=64;
+var largeur=48;
+var hauteur=48;
 
 var nbCases = largeur*hauteur;
 var url = 'PHP/draw.php';
@@ -18,6 +18,7 @@ function afficherGrille(h, l) {
 		}
 		$("#grille").append("<div class='clear'></div>");
 	}
+	$("#grille").append("<br/>Parametres : <label id='parametres'></label>");
 }
 
 // Création des cases de couleur qui seront draggees
@@ -42,7 +43,7 @@ afficherGrille(hauteur, largeur);
 // Ajout de l'event droppable sur les cases
 $(".case").droppable({
 	addClasses: false,
-	over: function(event, ui) {
+	drop: function(event, ui) {
 		var droppe = event.target;
 		droppe.style.backgroundColor = couleur;
 		numero = droppe.className.substr(9);
@@ -73,7 +74,6 @@ setInterval(function(){
 
 // Zone de texte pour entrer les commandes et les paramètres
 $("#outils").append("Commande : <input id='commandes'/>");
-$("#outils").append("Parametres : <input id='parametres'/>");
 $("#outils").append("<button id='valideCommande'>Valider</button>");
 
 // *******************************
@@ -84,12 +84,20 @@ $("#valideCommande").click(function () {
 	
 	commande = $("#commandes").val();
 
-	// Efface la grille locale
-	if (commande == 'effacer' || commande == 'charger')
+	// Efface la grille
+	if (commande == 'effacer')
 	{
 		for (var i=0; i<nbCases; i++) {
 			$(".case"+i).css("background-color", 'rgb(255, 255, 255)');
 		}
+	
+		// Envoie de la requête ajax contenant la commande ainsi que les paramètres
+		$.ajax({
+			url: url,
+			type: 'POST',
+			cache: false,
+			data: {commande: commande, parametres: $("#parametres").text()}
+		});
 	}
 
 	// Colorie une case aleatoire avec une couleur aléatoire
@@ -101,30 +109,101 @@ $("#valideCommande").click(function () {
 		coulB = Math.floor((255)*Math.random());
 		coulAlea = "rgb("+coulR+","+coulG+","+coulB+")";
 
-		$("#parametres").val(caseAlea+";"+coulAlea+";"+nbCases);
+		$("#parametres").text(caseAlea+";"+coulAlea+";"+nbCases);
 
 		$(".case"+caseAlea).css("background-color", coulAlea);
+	
+		// Envoie de la requête ajax contenant la commande ainsi que les paramètres
+		$.ajax({
+			url: url,
+			type: 'POST',
+			cache: false,
+			data: {commande: commande, parametres: $("#parametres").text()}
+		});
+	}
+
+	// Sauvegarder une image
+	if (commande == 'sauvegarder')
+	{
+		$("#outils").append("<div id='divParametres'></div>");
+		$("#divParametres").append("<br/>Nom de l'image : <input id='save'/>");
+		$("#divParametres").append("<button id='valideParametres'>Valider</button>");
+	
+		$("#valideParametres").click(function () {
+			$("#parametres").text($("#save").val());
+			$.ajax({
+				url: url,
+				type: 'POST',
+				cache: false,
+				data: {commande: commande, parametres: $("#parametres").text()}
+			});
+			$("#divParametres").remove();
+		})
+	}
+
+	// charger une image
+	if (commande == 'charger')
+	{
+		$("#outils").append("<div id='divParametres'></div>");
+		$("#divParametres").append("<br/>Nom de l'image : <input id='load'/>");
+		$("#divParametres").append("<button id='valideParametres'>Valider</button>");
+	
+		$("#valideParametres").click(function () {
+			$("#parametres").text($("#load").val());
+			$.ajax({
+				url: url,
+				type: 'POST',
+				cache: false,
+				data: {commande: commande, parametres: $("#parametres").text()}
+			});
+			$("#divParametres").remove();
+		})
+	}
+
+	// Dessine un rectangle à partir des cases des 4 angles et de la couleur
+	// (HautGauche, HautDroite, BasDroite, BasGauche, Couleur)
+
+	if (commande == 'rectangle')
+	{
+		$("#outils").append("<div id='divParametres'></div>");
+		$("#divParametres").append("<br/>Haut Gauche : <input id='hg'/>");
+		$("#divParametres").append("<br/>Haut Droite : <input id='hd'/>");
+		$("#divParametres").append("<br/>Bas Droite : <input id='bd'/>");
+		$("#divParametres").append("<br/>Bas Gauche : <input id='bg'/>");
+		$("#divParametres").append("<br/>Couleur r,g,b: <input id='coulrgb'/>");
+		$("#divParametres").append("<button id='valideParametres'>Valider</button>");
+
+		$("#valideParametres").click(function () {
+			var $listeParams = $('#hg').val()+";"+$('#hd').val()+";"+$('#bd').val()+";"+$('#bg').val()+";rgb("+$('#coulrgb').val()+")";
+			$("#parametres").text($listeParams);
+			$.ajax({
+				url: url,
+				type: 'POST',
+				cache: false,
+				data: {commande: commande, parametres: $("#parametres").text()}
+			});
+			$("#divParametres").remove();
+		})
 	}
 
 	// Colorie la grille à partir d'une image
 	if (commande == 'chargerImage')
 	{
-		$("#parametres").val();
+		$("#outils").append("<div id='divParametres'></div>");
+		$("#divParametres").append("<br/>Lien de l'image : <input id='lienImage'/>");
+		$("#divParametres").append("<button id='valideParametres'>Valider</button>");
+
+		$("#valideParametres").click(function () {
+			$("#parametres").text($("#lienImage").val());
+			$.ajax({
+				url: url,
+				type: 'POST',
+				cache: false,
+				data: {commande: commande, parametres: $("#parametres").text()}
+			});
+			$("#divParametres").remove();
+		})
 	}
 
-	// Commande de test
-	if (commande == 'test')
-	{
-		$("#parametres").val();
-	}
-
-	// Envoie de la requête ajax contenant la commande ainsi que les paramètres
-	$.ajax({
-		url: url,
-		type: 'POST',
-		cache: false,
-		data: {commande: commande, parametres: $("#parametres").val()}
-	});
-
-	$("#parametres").val('');
+	$("#parametres").text('');
 })

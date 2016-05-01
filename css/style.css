@@ -1,17 +1,45 @@
+.clear { clear : both ; }
+
+body {
+	background-image: url(../images/postit.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+h1
+{
+	text-align: center;
+	font-family: 'BolshevikRegular'; 
+	margin-bottom: 3%;
+}
+
 .case {
 	position: relative;
+	background-color: white;
 	border: 1px solid black;
-	width: 14px;
-	height: 14px;
+	width: 21px;
+	height: 21px;
 	float: left;
 }
 
-.clear { clear : both ; }
-
 .couleurs {
 	position: relative;
-	width: 50px;
-	height: 25px;
-	float:left;
-	margin-bottom: 5px;
+	width: 21px;
+	height: 21px;
+	float: left;
+	border: 2px solid black;
+	margin-right: 3px;
+}
+
+#grille {
+	padding: 1% 0 0 4%;
+}
+
+#palette {
+	z-index: 10;
+	padding-left: 4%;
+}
+
+#outils {
+	padding-top: 1%;
 }

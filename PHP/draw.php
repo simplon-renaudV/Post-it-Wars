@@ -36,7 +36,7 @@
 	// Stocke la grille dans le fichier drawing.json
 	if (isset($_POST['numcase']) && isset($_POST['couleur'])) {
 		if (!isset($_POST['totalCases'])) {
-			$totalCases = 4096;
+			$totalCases = 2304;
 		}
 		else {
 			$totalCases = $_POST['totalCases'];
@@ -87,7 +87,7 @@
 				drawJson($tabCases);
 			}
 		
-			for ($i=$params[1]; $i<$params[2]; $i+=16){
+			for ($i=$params[1]; $i<$params[2]; $i+=48){
 				$tabCases[$i] = $params[4];
 				drawJson($tabCases);
 			}
@@ -97,7 +97,7 @@
 				drawJson($tabCases);
 			}
 		
-			for ($i=$params[3]; $i>$params[0]; $i-=16){
+			for ($i=$params[3]; $i>$params[0]; $i-=48){
 				$tabCases[$i] = $params[4];
 				drawJson($tabCases);
 			}
@@ -129,7 +129,7 @@
 
 			$sourceImage = imagecreatefromjpeg($_POST['parametres']);
 
-			$lImg = 256;
+			$lImg = 192;
 			$tZone = 4;
 
 			$imageRedim = imagescale($sourceImage, $lImg);
