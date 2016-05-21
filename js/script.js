@@ -99,7 +99,7 @@ $(".case").hover(function(event, ui) {
 			url: url,
 			type: 'POST',
 			cache: false,
-			data: {numcase: numero2[0], couleur: couleurTest, totalCases: nbCases}
+			data: {numcase: numero2[0], couleur: $(".coulActive").css("background-color"), totalCases: nbCases}
 		});
 	}
 });
