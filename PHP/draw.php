@@ -1,10 +1,13 @@
 <?php
-	include ('AllowCrossOrigin.php');
+	include ('../CORS.php');
 	require_once '../vendor/autoload.php';
 	
 	use ColorThief\ColorThief;
 
 	$grilleJson = '../Json/drawing.json';
+
+	$larg = 48;
+	$haut = 48;
 
 	// Fonction pour mettre à jour le fichier drawing.json
 	function drawJson($tableau)
@@ -36,7 +39,7 @@
 	// Stocke la grille dans le fichier drawing.json
 	if (isset($_POST['numcase']) && isset($_POST['couleur'])) {
 		if (!isset($_POST['totalCases'])) {
-			$totalCases = 2304;
+			$totalCases = $larg * $haut;
 		}
 		else {
 			$totalCases = $_POST['totalCases'];
@@ -82,22 +85,27 @@
 		if (isset($_POST['parametres'])) {
 			$params = explode(";", $_POST['parametres']);
 			
-			for ($i=$params[0]; $i<$params[1]; $i++){
+			$numCases[0] = $params[1]*$larg + $params[0];
+			$numCases[1] = $params[1]*$larg + $params[2];
+			$numCases[2] = $params[3]*$larg + $params[2];
+			$numCases[3] = $params[3]*$larg + $params[0];
+
+			for ($i=$numCases[0]; $i<$numCases[1]; $i++){
 				$tabCases[$i] = $params[4];
 				drawJson($tabCases);
 			}
 		
-			for ($i=$params[1]; $i<$params[2]; $i+=48){
+			for ($i=$numCases[1]; $i<$numCases[2]; $i+=48){
 				$tabCases[$i] = $params[4];
 				drawJson($tabCases);
 			}
 
-			for ($i=$params[2]; $i>$params[3]; $i--){
+			for ($i=$numCases[2]; $i>$numCases[3]; $i--){
 				$tabCases[$i] = $params[4];
 				drawJson($tabCases);
 			}
 		
-			for ($i=$params[3]; $i>$params[0]; $i-=48){
+			for ($i=$numCases[3]; $i>$numCases[0]; $i-=48){
 				$tabCases[$i] = $params[4];
 				drawJson($tabCases);
 			}
@@ -130,7 +138,7 @@
 			$sourceImage = imagecreatefromjpeg($_POST['parametres']);
 
 			$lImg = 192;
-			$tZone = 4;
+			$tZone = $lImg/$larg;
 
 			$imageRedim = imagescale($sourceImage, $lImg);
 			$l = imagesx($imageRedim);

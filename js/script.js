@@ -9,11 +9,17 @@ var nbCases = largeur*hauteur;
 var url = 'PHP/draw.php';
 var urlJSON = 'Json/drawing.json';
 
+var tailleCase = $("#grille").width()/largeur-1;
+hauteurGrille = $("#grille").width();
+
 // Fonction servant à afficher la grille blanche ou seront droppees les couleurs
 function afficherGrille(h, l) {
+
+	$("#grille").css("height", hauteurGrille);
+
 	for (var i=0; i<h; i++) {
 		for(var j=0; j<l; j++) {
-			$("#grille").append("<div class='case case"+numcase+"'></div>");
+			$("#grille").append("<div class='case case"+numcase+" col"+j+" lig"+i+"' id='case"+numcase+"'></div>");
 			numcase++;
 		}
 		$("#grille").append("<div class='clear'></div>");
@@ -25,6 +31,11 @@ function afficherGrille(h, l) {
 for (var i=0; i<couleurs.length; i++) {
 	$("#palette").append("<div class='couleurs' id='couleur"+i+"' draggable='true'></div>");
 	$("#couleur"+i).css("background-color", couleurs[i]);
+
+	if (i==0)
+	{
+		$("#couleur"+i).addClass("coulActive");
+	}
 
 	$("#couleur"+i).draggable({
 		cursor: "grab",
@@ -39,6 +50,9 @@ for (var i=0; i<couleurs.length; i++) {
 $("#palette").append("<div class='clear'></div>");
 
 afficherGrille(hauteur, largeur);
+
+$(".case").css("width", tailleCase+"px");
+$(".case").css("height", tailleCase+"px");
 
 // Ajout de l'event droppable sur les cases
 $(".case").droppable({
@@ -75,6 +89,32 @@ setInterval(function(){
 // Zone de texte pour entrer les commandes et les paramètres
 $("#outils").append("Commande : <input id='commandes'/>");
 $("#outils").append("<button id='valideCommande'>Valider</button>");
+
+var r = $("#slideR");
+var g = $("#slideG");
+var b = $("#slideB");
+
+r.slider({min: 0, max: 255, slide: function(event, ui) {
+	$("#coulChoisie").css('background-color', 'rgb('+r.slider("value")+','+g.slider("value")+','+b.slider("value")+')');
+}
+});
+
+g.slider({min: 0, max: 255, slide: function(event, ui) {
+	$("#coulChoisie").css('background-color', 'rgb('+r.slider("value")+','+g.slider("value")+','+b.slider("value")+')');
+}
+});
+
+b.slider({min: 0, max: 255, slide: function(event, ui) {
+	$("#coulChoisie").css('background-color', 'rgb('+r.slider("value")+','+g.slider("value")+','+b.slider("value")+')');
+}
+});
+
+$("#validCouleur").click(function () {
+	console.log(r.slider("value"));
+	console.log(g.slider("value"));
+	console.log(b.slider("value"));
+})
+
 
 // *******************************
 // **** Gestion des commandes ****
@@ -113,7 +153,6 @@ $("#valideCommande").click(function () {
 
 		$(".case"+caseAlea).css("background-color", coulAlea);
 	
-		// Envoie de la requête ajax contenant la commande ainsi que les paramètres
 		$.ajax({
 			url: url,
 			type: 'POST',
@@ -166,15 +205,20 @@ $("#valideCommande").click(function () {
 	if (commande == 'rectangle')
 	{
 		$("#outils").append("<div id='divParametres'></div>");
-		$("#divParametres").append("<br/>Haut Gauche : <input id='hg'/>");
-		$("#divParametres").append("<br/>Haut Droite : <input id='hd'/>");
-		$("#divParametres").append("<br/>Bas Droite : <input id='bd'/>");
-		$("#divParametres").append("<br/>Bas Gauche : <input id='bg'/>");
+
+		$("#divParametres").append("<br/>x1 : <input id='x1'/>");
+		$("#divParametres").append("<br/>y1 : <input id='y1'/>");
+		$("#divParametres").append("<br/>x2 : <input id='x2'/>");
+		$("#divParametres").append("<br/>y2 : <input id='y2'/>");
+
 		$("#divParametres").append("<br/>Couleur r,g,b: <input id='coulrgb'/>");
 		$("#divParametres").append("<button id='valideParametres'>Valider</button>");
 
 		$("#valideParametres").click(function () {
-			var $listeParams = $('#hg').val()+";"+$('#hd').val()+";"+$('#bd').val()+";"+$('#bg').val()+";rgb("+$('#coulrgb').val()+")";
+			
+			var $listeParams = $('#x1').val()+";"+$('#y1').val()+";"+$('#x2').val()+";"+$('#y2').val()+";rgb("+$('#coulrgb').val()+")";
+
+
 			$("#parametres").text($listeParams);
 			$.ajax({
 				url: url,

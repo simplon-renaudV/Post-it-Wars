@@ -1,4 +1,4 @@
-.clear { clear : both ; }
+.clear { clear : left ; }
 
 body {
 	background-image: url(../images/postit.jpg);
@@ -31,8 +31,8 @@ h1
 	margin-right: 3px;
 }
 
-#grille {
-	padding: 1% 0 0 4%;
+.coulActive {
+	border: 3px solid gray;
 }
 
 #palette {
@@ -42,4 +42,28 @@ h1
 
 #outils {
 	padding-top: 1%;
+}
+
+#colorPicker {
+	width: 100%;
+	background-color: gray;
+	height: 200px;
+}
+
+#coulChoisie {
+	height: 90px;
+	width: 90%;
+	margin: 0 auto;
+	border: 1px solid black;
+	background-color: black;
+}
+
+#colorPicker p {
+	display: inline-block;
+}
+.slideCouleur {
+	width: 75%;
+	margin-top: 6%;
+	margin-left: 10px;
+	display: inline-block;
 }
