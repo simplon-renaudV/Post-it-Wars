@@ -10,7 +10,9 @@ var url = 'PHP/draw.php';
 var urlJSON = 'Json/drawing.json';
 
 var tailleCase = $("#grille").width()/largeur-1;
-hauteurGrille = $("#grille").width();
+var hauteurGrille = $("#grille").width();
+
+var sourisDown = false;
 
 // Fonction servant à afficher la grille blanche ou seront droppees les couleurs
 function afficherGrille(h, l) {
@@ -72,6 +74,36 @@ $(".case").droppable({
 	}		
 });
 
+// change la valeur de sourisDown lorsque le bouton de la souris est enfoncé
+$(".case").mousedown(function(){
+	sourisDown = true;
+});
+
+// change la valeur de sourisDown lorsque le bouton de la souris est relaché
+$(".case").mouseup(function(){
+	sourisDown = false;
+})
+
+// Ajout de l'event hover sur les cases (uniquement lorsque le bouton de la souris est enfoncé)
+$(".case").hover(function(event, ui) {
+	
+	if (sourisDown) {
+		$(this).css("background-color", $(".coulActive").css('background-color'));
+
+		var droppe = event.target;
+		droppe.style.backgroundColor = $(".coulActive").css('background-color');
+		numero = droppe.className.substr(9);
+		numero2 =/\d+/.exec(numero);
+	
+		$.ajax({
+			url: url,
+			type: 'POST',
+			cache: false,
+			data: {numcase: numero2[0], couleur: couleurTest, totalCases: nbCases}
+		});
+	}
+});
+
 // Rafraichissement de la grille distante toutes les 5sec
 setInterval(function(){
 	$.ajax({
@@ -110,9 +142,7 @@ b.slider({min: 0, max: 255, slide: function(event, ui) {
 });
 
 $("#validCouleur").click(function () {
-	console.log(r.slider("value"));
-	console.log(g.slider("value"));
-	console.log(b.slider("value"));
+	$(".coulActive").css('background-color', 'rgb('+r.slider("value")+','+g.slider("value")+','+b.slider("value")+')');
 })
 
 
