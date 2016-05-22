@@ -128,6 +128,7 @@ setInterval(function(){
 $("#outils").append("Commande : <input id='commandes'/>");
 $("#outils").append("<button id='valideCommande'>Valider</button>");
 
+// Mise en place des sliders du colorPicker
 var r = $("#slideR");
 var g = $("#slideG");
 var b = $("#slideB");
@@ -149,8 +150,20 @@ b.slider({min: 0, max: 255, slide: function(event, ui) {
 
 $("#validCouleur").click(function () {
 	$(".coulActive").css('background-color', 'rgb('+r.slider("value")+','+g.slider("value")+','+b.slider("value")+')');
-})
+});
 
+// Mise en place du spinner pour le zoom zoom
+var zoom = $("#zoom");
+var largGrille = $("#grille").width();
+
+zoom.slider();
+zoom.slider("value", 100);
+zoom.slider({min: 0, max: 100, slide: function(event, ui) {
+	largGrille = 1068*zoom.slider("value")/100;
+	tailleCase = largGrille/largeur-1;
+	$(".case").css("width", tailleCase+"px");
+	$(".case").css("height", tailleCase+"px");
+}});
 
 // *******************************
 // **** Gestion des commandes ****
