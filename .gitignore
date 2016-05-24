@@ -1,1 +1,2 @@
-/Json/*.json
+**/*.json
+composer.*
