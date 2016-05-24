@@ -26,7 +26,7 @@ function afficherGrille(h, l) {
 		}
 		$("#grille").append("<div class='clear'></div>");
 	}
-	$("#grille").append("<div id='divParametres'><br/>Parametres : <label id='parametres'></label></div>");
+	$("#grille").append("<div id='divParams'><br/>Parametres : <label id='parametres'></label></div>");
 }
 
 // Envoie la requête Ajax pour les commandes
@@ -135,7 +135,6 @@ setInterval(function(){
 	}, 5000);
 
 // Zone de texte pour entrer les commandes et les paramètres
-$("#outils").append("Commande : <input id='commandes'/>");
 $("#outils").append("<button id='valideCommande'>Valider</button>");
 
 // Mise en place des sliders du colorPicker
@@ -186,6 +185,8 @@ $("#valideCommande").click(function () {
 	// Efface la grille
 	if (commande == 'effacer')
 	{
+		$("#divParametres").remove();
+
 		for (var i=0; i<nbCases; i++) {
 			$(".case"+i).css("background-color", 'rgb(255, 255, 255)');
 		}
@@ -196,6 +197,9 @@ $("#valideCommande").click(function () {
 	// Colorie une case aleatoire avec une couleur aléatoire
 	if (commande == 'aleatoire')
 	{
+
+		$("#divParametres").remove();
+
 		caseAlea = Math.floor((nbCases-1)*Math.random());
 		coulR = Math.floor((255)*Math.random());
 		coulG = Math.floor((255)*Math.random());
@@ -211,8 +215,10 @@ $("#valideCommande").click(function () {
 	// Sauvegarder une image
 	if (commande == 'sauvegarder')
 	{
+		$("#divParametres").remove();
+
 		$("#outils").append("<div id='divParametres'></div>");
-		$("#divParametres").append("<br/>Nom de l'image : <input id='save'/>");
+		$("#divParametres").append("<br/>Nom du fichier : <input id='save'/>");
 		$("#divParametres").append("<button id='valideParametres'>Valider</button>");
 	
 		$("#valideParametres").click(function () {
@@ -221,14 +227,16 @@ $("#valideCommande").click(function () {
 			requeteAjaxCommande();
 
 			$("#divParametres").remove();
-		})
+		});
 	}
 
 	// charger une image
 	if (commande == 'charger')
 	{
+		$("#divParametres").remove();
+
 		$("#outils").append("<div id='divParametres'></div>");
-		$("#divParametres").append("<br/>Nom de l'image : <input id='load'/>");
+		$("#divParametres").append("<br/>Nom du fichier : <input id='load'/>");
 		$("#divParametres").append("<button id='valideParametres'>Valider</button>");
 	
 		$("#valideParametres").click(function () {
@@ -237,7 +245,7 @@ $("#valideCommande").click(function () {
 			requeteAjaxCommande();
 
 			$("#divParametres").remove();
-		})
+		});
 	}
 
 	// Dessine un rectangle à partir des cases des 4 angles et de la couleur
@@ -245,6 +253,8 @@ $("#valideCommande").click(function () {
 
 	if (commande == 'rectangle')
 	{
+		$("#divParametres").remove();
+
 		$("#outils").append("<div id='divParametres'></div>");
 
 		$("#divParametres").append("<br/>x1 : <input id='x1'/>");
@@ -264,12 +274,14 @@ $("#valideCommande").click(function () {
 			requeteAjaxCommande();
 
 			$("#divParametres").remove();
-		})
+		});
 	}
 
 	// Colorie la grille à partir d'une image
 	if (commande == 'chargerImage')
 	{
+		$("#divParametres").remove();
+
 		$("#outils").append("<div id='divParametres'></div>");
 		$("#divParametres").append("<br/>Lien de l'image : <input id='lienImage'/>");
 		$("#divParametres").append("<button id='valideParametres'>Valider</button>");
@@ -280,7 +292,7 @@ $("#valideCommande").click(function () {
 			requeteAjaxCommande();
 
 			$("#divParametres").remove();
-		})
+		});
 	}
 
 	$("#parametres").text('');
