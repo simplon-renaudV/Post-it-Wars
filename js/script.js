@@ -59,6 +59,7 @@ for (var i=0; i<couleurs.length; i++) {
 	});
 }
 
+// Change la couleur active lors du clic sur une case de la palette
 $('.couleurs').click(function() {
 	var id = $(this).attr('id');
 	$('.couleurs').removeClass('coulActive');
